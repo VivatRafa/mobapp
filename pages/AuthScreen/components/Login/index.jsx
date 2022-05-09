@@ -22,7 +22,7 @@ const Login = () => {
       const resp = await kyFetch.post('login', { json: data }).json()
 
       const { accessToken } = resp || {};
-
+      console.log(resp);
       if (accessToken) {
         setAccessToken(accessToken);
         setIsLoggedIn(true);

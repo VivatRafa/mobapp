@@ -22,30 +22,35 @@ function HistoryScreen({ navigation }) {
         return {};
     })
 
+    const isCirculationsExist = circulations?.length;
+
     return (
         <View style={styles.container}>
             <ScrollView>
-                <Text style={styles.title}>История</Text>
-                {circulations.map(({ id, createdAt, endAt }) => (
-                    <View key={id} style={[styles.card, false ? styles.cardActive : '']}>
-                        <View style={styles.cardRow}>
-                            <Text style={styles.cardRowLabel}>Номер:</Text>
-                            <Text style={styles.cardRowValue}>{id}</Text>
+                {/* <Text style={styles.title}>История</Text> */}
+                {isCirculationsExist ? 
+                    circulations.map(({ id, createdAt, endAt }) => (
+                        <View key={id} style={[styles.card, false ? styles.cardActive : '']}>
+                            <View style={styles.cardRow}>
+                                <Text style={styles.cardRowLabel}>Номер:</Text>
+                                <Text style={styles.cardRowValue}>{id}</Text>
+                            </View>
+                            <View style={styles.cardRow}>
+                                <Text style={styles.cardRowLabel}>Тираж от:</Text>
+                                <Text style={styles.cardRowValue}>{createdAt}</Text>
+                            </View>
+                            <View style={styles.cardRow}>
+                                <Text style={styles.cardRowLabel}>Закончился:</Text>
+                                <Text style={styles.cardRowValue}>{endAt}</Text>
+                            </View>
+                            <View style={styles.cardRow}>
+                                <Text style={styles.cardRowLabel}>Угадано::</Text>
+                                <Text style={styles.cardRowValue}>0 из 7</Text>
+                            </View>
                         </View>
-                        <View style={styles.cardRow}>
-                            <Text style={styles.cardRowLabel}>Тираж от:</Text>
-                            <Text style={styles.cardRowValue}>{createdAt}</Text>
-                        </View>
-                        <View style={styles.cardRow}>
-                            <Text style={styles.cardRowLabel}>Закончился:</Text>
-                            <Text style={styles.cardRowValue}>{endAt}</Text>
-                        </View>
-                        <View style={styles.cardRow}>
-                            <Text style={styles.cardRowLabel}>Угадано::</Text>
-                            <Text style={styles.cardRowValue}>0 из 7</Text>
-                        </View>
-                    </View>
-                ))}
+                    ))
+                    : <Text style={styles.noCirculationText}>Вы не участвовали ни в одном тираже</Text>
+                }
             </ScrollView>
         </View>
     );
@@ -89,4 +94,8 @@ const styles = StyleSheet.create({
     cardRowValue: {
         color: '#fff',
     },
+    noCirculationText: {
+        color: '#fff',
+        textAlign: 'center',
+    }
 });

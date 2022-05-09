@@ -46,32 +46,34 @@ function CirculationScreen() {
     const { events } = circulation || {};
 
     const isNotAllEventOutcomesChoosed = Object.keys(outcomes).length !== events?.length;
-
+    const isCirculationsExist = events?.length;
     return (
-        // <View style={{ height: '100%', display: 'flex' }}>
         <View style={styles.container}>
-            <ScrollView>
-                <Text style={styles.title}>Тираж №1</Text>
-                <Text style={styles.title}>Джекпот: 10 000Р</Text>
-                {events?.map(({ command1, command2, dateTime, id }) => (
-                    <View key={id} style={{ marginBottom: 24 }}>
-                        <Card
-                            onPress={outcome => setOutcomes({ ...outcomes, [id]: outcome })}
-                            command1={command1}
-                            command2={command2}
-                            dateTime={dateTime}
-                        />
-                    </View>
-                ))}
-                <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center', marginBottom: 15 }}>{message}</Text>
-                <BaseButton
-                    title="Сохранить"
-                    onPress={saveResult}
-                    disabled={isNotAllEventOutcomesChoosed}
-                />
-            </ScrollView>
+            {isCirculationsExist ? (
+                <ScrollView>
+                    <Text style={styles.title}>Тираж №1</Text>
+                    <Text style={styles.title}>Джекпот: 10 000Р</Text>
+                    {events?.map(({ command1, command2, dateTime, id }) => (
+                        <View key={id} style={{ marginBottom: 24 }}>
+                            <Card
+                                onPress={outcome => setOutcomes({ ...outcomes, [id]: outcome })}
+                                command1={command1}
+                                command2={command2}
+                                dateTime={dateTime}
+                            />
+                        </View>
+                    ))}
+                    <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center', marginBottom: 15 }}>{message}</Text>
+                    <BaseButton
+                        title="Сохранить"
+                        onPress={saveResult}
+                        disabled={isNotAllEventOutcomesChoosed}
+                    />
+                </ScrollView>
+            ) : (
+                <Text style={styles.noCirculation}>Тиражей ещё не было</Text>
+            )}
         </View>
-        // </View>
     );
 }
 
@@ -96,5 +98,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textAlign: 'center',
         marginBottom: 24,
+    },
+    noCirculation: {
+        color: '#fff',
+        textAlign: 'center',
     },
 });

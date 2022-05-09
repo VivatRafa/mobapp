@@ -21,13 +21,6 @@ const options = {
 }
 
 const routes = [
-  // {
-  //   name: 'Auth',
-  //   title: 'Аутентификация',
-  //   icon: 'Star',
-  //   component: AuthScreen,
-  //   options: {...options, headerShown: false},
-  // },
   {
     name: 'Circulation',
     title: 'Текущий тираж',
