@@ -1,4 +1,4 @@
-package com.mobile;
+package com.f7;
 
 import android.os.Bundle;
 
