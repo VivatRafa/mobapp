@@ -1,6 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import React, { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import AuthContext from '../context/AuthProvider';
@@ -48,34 +49,36 @@ export default function Navigator() {
   const { isLoggedIn } = useContext(AuthContext);
 
   return (
-    <NavigationContainer>
-        <Drawer.Navigator initialRouteName="Home">
-        {isLoggedIn ?
-            routes.map(({ name, title, icon, component, options }) => (
-                <Drawer.Screen
-                key={name}
-                name={name}
-                component={component}
-                options={{
-                    ...options, title,
-                    drawerLabel: ({ focused }) => (
-                    <Text style={focused ? styles.drawerLabelFocused : styles.drawerLabel}>{title}</Text>
-                    ),
-                    drawerIcon: () => {
-                    const Icon = icons[icon];
-                    return <Icon />
-                    },
-                    drawerActiveBackgroundColor: '#212121',
-                    drawerInactiveBackgroundColor: '#000',
-                    drawerContentStyle: { backgroundColor: '#000' }
-                }}
-                />
-            )) : (
-                <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
-            )
-        }
-        </Drawer.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+          <Drawer.Navigator initialRouteName="Home">
+          {isLoggedIn ?
+              routes.map(({ name, title, icon, component, options }) => (
+                  <Drawer.Screen
+                  key={name}
+                  name={name}
+                  component={component}
+                  options={{
+                      ...options, title,
+                      drawerLabel: ({ focused }) => (
+                      <Text style={focused ? styles.drawerLabelFocused : styles.drawerLabel}>{title}</Text>
+                      ),
+                      drawerIcon: () => {
+                      const Icon = icons[icon];
+                      return <Icon />
+                      },
+                      drawerActiveBackgroundColor: '#212121',
+                      drawerInactiveBackgroundColor: '#000',
+                      drawerContentStyle: { backgroundColor: '#000' }
+                  }}
+                  />
+              )) : (
+                  <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
+              )
+          }
+          </Drawer.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
