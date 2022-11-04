@@ -19,7 +19,7 @@ function AuthScreen({ navigation }) {
         <View style={styles.container}>
 
             <Logo style={styles.logo} />
-            {/* <Text style={styles.title}>Бесплатные лотереи</Text> */}
+            <Text style={styles.title}>Турнир прогнозов</Text>
             <View style={styles.buttonsContainer}>
                 <BaseButton
                     title="Регистрация"
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         lineHeight: 45,
         textAlign: 'center',
         color: '#fff',
-        marginBottom: 24,
+        marginBottom: 36,
     },
     buttonsContainer: {
         display: 'flex',

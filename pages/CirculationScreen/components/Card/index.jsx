@@ -18,23 +18,24 @@ const buttonsDefaultValue = {
     },
 };
 
-const Card = ({ onPress, command1, command2, dateTime }) => {
+const Card = ({ onPress, command1, command2, dateTime, value, disabled, title }) => {
     const [buttons, setButtons] = useState(buttonsDefaultValue)
-    const [currentActiveButton, setCurrentActiveButton] = useState(null);
+    const [currentActiveButton, setCurrentActiveButton] = useState(value || null);
     const onPressLocal = (outcome) => {
-
-        onPress(outcome);
+        if (disabled) return;
+        onPress && onPress(outcome);
         setCurrentActiveButton(outcome);
     }
 
     return (
         <View style={styles.card}>
             <Text style={styles.dateTime}>{dateTime}</Text>
+            <Text style={styles.commands}>{title}</Text>
             <Text style={styles.commands}>{command1} — {command2}</Text>
             <View style={styles.buttons}>
                 {Object.keys(buttons).map(outcome => {
                     const { label, value } = buttons[outcome];
-                    const isActive = value === currentActiveButton;
+                    const isActive = Number(value) === Number(currentActiveButton);
                     return (
                         <BaseButton
                             key={label}

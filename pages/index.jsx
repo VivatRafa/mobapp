@@ -10,6 +10,9 @@ import AuthScreen from './AuthScreen';
 import CirculationScreen from './CirculationScreen';
 import HistoryScreen from './HistoryScreen';
 import PersonalScreen from './PersonalScreen';
+import AboutScreen from './AboutScreen';
+import RulesScreen from './RulesScreen';
+import CirculationItemHistoryScreen from './CirculationItemHistoryScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -43,6 +46,27 @@ const routes = [
     component: HistoryScreen,
     options,
   },
+  {
+    name: 'CirculationHistory',
+    title: 'История тиража',
+    icon: 'History',
+    component: CirculationItemHistoryScreen,
+    options,
+  },
+  {
+    name: 'About',
+    title: 'О нас',
+    icon: 'Star',
+    component: AboutScreen,
+    options,
+  },
+  {
+    name: 'Rules',
+    title: 'Правила',
+    icon: 'Star',
+    component: RulesScreen,
+    options,
+  },
 ]
 
 export default function Navigator() {
@@ -55,22 +79,23 @@ export default function Navigator() {
           {isLoggedIn ?
               routes.map(({ name, title, icon, component, options }) => (
                   <Drawer.Screen
-                  key={name}
-                  name={name}
-                  component={component}
-                  options={{
-                      ...options, title,
-                      drawerLabel: ({ focused }) => (
-                      <Text style={focused ? styles.drawerLabelFocused : styles.drawerLabel}>{title}</Text>
-                      ),
-                      drawerIcon: () => {
-                      const Icon = icons[icon];
-                      return <Icon />
-                      },
-                      drawerActiveBackgroundColor: '#212121',
-                      drawerInactiveBackgroundColor: '#000',
-                      drawerContentStyle: { backgroundColor: '#000' }
-                  }}
+                    key={name}
+                    name={name}
+                    component={component}
+                    options={{
+                        ...options, title,
+                        drawerLabel: ({ focused }) => (
+                        <Text style={focused ? styles.drawerLabelFocused : styles.drawerLabel}>{title}</Text>
+                        ),
+                        drawerIcon: () => {
+                        const Icon = icons[icon];
+                        return <Icon />
+                        },
+                        drawerActiveBackgroundColor: '#212121',
+                        drawerInactiveBackgroundColor: '#000',
+                        drawerContentStyle: { backgroundColor: '#000' },
+                        drawerItemStyle: name === 'CirculationHistory' ? { height: 0 } : {},
+                    }}
                   />
               )) : (
                   <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />

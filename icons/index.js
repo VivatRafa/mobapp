@@ -6,6 +6,7 @@ import Exit from "./exit";
 import History from "./history";
 import Person from "./person";
 import Star from "./star";
+import SportCup from "./sportCup";
 
 const icons = {
     Eye,
@@ -16,6 +17,7 @@ const icons = {
     History,
     Person,
     Star,
+    SportCup,
 }
 
 export default icons;

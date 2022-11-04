@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import useSWR from 'swr';
 import kyFetch from '../../api';
 
@@ -14,7 +14,9 @@ function HistoryScreen({ navigation }) {
             const preparedCirculations = result.map(circulation => ({
                 ...circulation,
                 createdAt: dayjs(circulation.createdAt).format('DD.MM.YYYY HH:mm'),
-                endAt: circulation.endAt ? dayjs(circulation.createdAt).format('DD.MM.YYYY HH:mm') : 'Ещё не закончился',
+                endAt: circulation.endAt ? dayjs(circulation.endAt).format('DD.MM.YYYY HH:mm') : 'Ещё не закончился',
+                guessed: circulation.userEventsResult.filter(result => result.guess).length,
+                count: circulation.userEventsResult.length,
             }))
             return preparedCirculations
         }
@@ -26,11 +28,17 @@ function HistoryScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
+            {/* <Text style={{ color: '#fff' }}>{JSON.stringify(circulations,null, 2)}</Text>
+            <Text style={{ color: '#fff' }}>{JSON.stringify(error,null, 2)}</Text> */}
             <ScrollView>
                 {/* <Text style={styles.title}>История</Text> */}
                 {isCirculationsExist ? 
-                    circulations.map(({ id, createdAt, endAt }) => (
-                        <View key={id} style={[styles.card, false ? styles.cardActive : '']}>
+                    circulations.map(({ id, createdAt, endAt, count, guessed }) => (
+                        <TouchableOpacity
+                            key={id}
+                            onPress={() => navigation.navigate('CirculationHistory', { circulationId: id })} 
+                            style={[styles.card, false ? styles.cardActive : '']}
+                        >
                             <View style={styles.cardRow}>
                                 <Text style={styles.cardRowLabel}>Номер:</Text>
                                 <Text style={styles.cardRowValue}>{id}</Text>
@@ -45,9 +53,9 @@ function HistoryScreen({ navigation }) {
                             </View>
                             <View style={styles.cardRow}>
                                 <Text style={styles.cardRowLabel}>Угадано::</Text>
-                                <Text style={styles.cardRowValue}>0 из 7</Text>
+                                <Text style={styles.cardRowValue}>{guessed} из {count}</Text>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     ))
                     : <Text style={styles.noCirculationText}>Вы не участвовали ни в одном тираже</Text>
                 }

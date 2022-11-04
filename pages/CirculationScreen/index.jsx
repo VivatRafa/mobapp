@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import kyFetch from '../../api';
 import BaseButton from '../../components/BaseButton';
 import Card from './components/Card';
+import Info from './components/Info';
 
 function CirculationScreen() {
     const [outcomes, setOutcomes] = useState({});
@@ -18,8 +19,11 @@ function CirculationScreen() {
                 ...event,
                 dateTime: dayjs(event.dateTime).format('DD.MM.YYYY HH:mm')
             }))
+            const createdAt = dayjs(result.createdAt).format('DD.MM.YYYY HH:mm')
+            const closeBetsAt = dayjs(result.closeBetsAt).format('DD.MM.YYYY HH:mm')
 
-            return { ...result, events }
+            
+            return { ...result, events, createdAt, closeBetsAt, timerCloseBetsAt: result.closeBetsAt }
         }
         
         return {};
@@ -33,8 +37,9 @@ function CirculationScreen() {
 
         try {
             const resp = await kyFetch.post('circulation/save', { json: data }).json();
-            const { success } = resp || {};
-            const message = success ? 'Результаты сохранены' : 'Что-то пошло не так, попробуйте ещё раз чуть позже';
+            const { success, error } = resp || {};
+            const errorMessage = error || 'Что-то пошло не так, попробуйте ещё раз чуть позже';
+            const message = success ? 'Результаты сохранены' : errorMessage;
             setMessage(message);
             setTimeout(() => setMessage(''), 3000);
         } catch (e) {
@@ -43,20 +48,31 @@ function CirculationScreen() {
         }
     }
     
-    const { events } = circulation || {};
+    const { events, id, createdAt, closeBetsAt, timerCloseBetsAt, numberParticipants } = circulation || {};
 
     const isNotAllEventOutcomesChoosed = Object.keys(outcomes).length !== events?.length;
     const isCirculationsExist = events?.length;
+
     return (
         <View style={styles.container}>
             {isCirculationsExist ? (
                 <ScrollView>
-                    <Text style={styles.title}>Тираж №1</Text>
-                    <Text style={styles.title}>Джекпот: 10 000Р</Text>
-                    {events?.map(({ command1, command2, dateTime, id }) => (
+                    <Info
+                        circulationId={id}
+                        createdAt={createdAt}
+                        closeBetsAt={closeBetsAt}
+                        timerCloseBetsAt={timerCloseBetsAt}
+                        numberParticipants={numberParticipants}
+                    />
+                    {/* <Text style={{ color: '#fff' }}>
+                        {JSON.stringify(circulation, null, 2)}
+                    </Text> */}
+                    {/* <Text style={styles.title}>Тираж №{id}</Text> */}
+                    {events?.map(({ command1, command2, dateTime, id, title }) => (
                         <View key={id} style={{ marginBottom: 24 }}>
                             <Card
                                 onPress={outcome => setOutcomes({ ...outcomes, [id]: outcome })}
+                                title={title}
                                 command1={command1}
                                 command2={command2}
                                 dateTime={dateTime}
@@ -88,6 +104,12 @@ const styles = StyleSheet.create({
       paddingBottom: 24,
     },
     title: {
+        color: '#fff',
+        fontSize: 16,
+        textAlign: 'center',
+        marginBottom: 16,
+    },
+    jackpot: {
         color: '#fff',
         fontSize: 16,
         textAlign: 'center',

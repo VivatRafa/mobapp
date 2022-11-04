@@ -27,7 +27,7 @@ const kyFetch = ky.extend({
         'content-type': 'application/json',
         'Accept': 'application/json',
     },
-    prefixUrl: 'http://62.113.105.26/api',
+    prefixUrl: 'http://62.113.100.201/api',
     // prefixUrl: 'http://192.168.0.15:3001',
     credentials: 'include',
     hooks: {

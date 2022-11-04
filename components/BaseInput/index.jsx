@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     },
     wrap: {
       width: '50%',
-      paddingTop: 22,
+      // paddingTop: 22,
     },
     label,
     labelFocused: {
@@ -73,13 +73,12 @@ const styles = StyleSheet.create({
       top: 8,
       fontSize: 12,
       color: '#03DAC5',
+      display: 'none',
     },
     input: {
       color: '#fff',
       textDecorationLine: 'none',
-    },
-    asd: {
-      color: '#dc3545',
+      height: '100%',
     },
     errorText: {
       marginTop: 4,
